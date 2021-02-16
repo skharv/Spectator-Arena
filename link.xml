@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<linker>
+  <assembly fullname="Json">
+    <type fullname="System.Text.Json" perserve="all"/>
+  </assembly>
+  <assembly fullname="Memory">
+    <type fullname="System.Memory" perserve="all"/>
+  </assembly>
+</linker>
