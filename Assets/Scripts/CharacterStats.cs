@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 public class CharacterStats : MonoBehaviour
 {
     public int maxHealth { get; private set; }
     public int currentHealth { get; private set; }
     public int maxStamina { get; private set; }
-    public int currentStamina { get; private set; }
-    public int currentAbility { get; private set; }
+    public float currentStamina { get; private set; }
     public int maxAbility { get; private set; }
+    public float currentAbility { get; private set; }
 
-    public int damage { get; private set; }
+    public string abilityName { get; private set; }
+
+    public float damage { get; private set; }
+    public float stun { get; private set; }
+
+
 
     [SerializeField]
     private Stat bulk;
@@ -19,15 +25,39 @@ public class CharacterStats : MonoBehaviour
     [SerializeField]
     private Stat speed;
 
-    public void Start()
+    public void Awake()
     {
+        bulk.Init();
+        endurance.Init();
+        speed.Init();
+        abilityName = "Test Ability";
+
         bulk.onStatChanged += OnBulkChanged;
+        endurance.onStatChanged += OnEnduranceChanged;
+        speed.onStatChanged += OnSpeedChanged;
+
+        OnBulkChanged();
+        OnEnduranceChanged();
+        OnSpeedChanged();
+
+        currentHealth = maxHealth;
+        currentStamina = maxStamina;
+        maxAbility = 100;
+        currentAbility = 0;
     }
 
     void OnBulkChanged()
     {
-        maxHealth = Mathf.RoundToInt(bulk.Value * 10);
-        print("Bulk has changed! Now bulk is " + bulk.Value + " and HP is now " + maxHealth);
+        CalculateMaxHealth();
+        damage = bulk.Value;
+        stun = bulk.Value / 10f;
+    }
+    void OnEnduranceChanged()
+    {
+        CalculateMaxStamina();
+    }
+    void OnSpeedChanged()
+    {
     }
     void Update()
     {
@@ -42,20 +72,40 @@ public class CharacterStats : MonoBehaviour
             bulk.AddModifiers(mod);
         }
     }
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        print(transform.name + " takes " + damage + " damage.");
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-     
-    public virtual void Die()
+    public int GetBulkValue()
     {
-        //please override
-        print(transform.name + " died.");
+        return bulk.Value;
+    }
+    public int GetEnduranceValue()
+    {
+        return endurance.Value;
+    }
+    public int GetSpeedValue()
+    {
+        return speed.Value;
+    }
+
+    public void SetCurrentAbility(float amount)
+    {
+        currentAbility = amount;
+    }
+    public void SetCurrentStamina(float amount)
+    {
+        currentStamina = amount;
+    }
+    public void SetCurrentHealth(int amount)
+    {
+        currentHealth = amount;
+    }
+
+    private void CalculateMaxHealth()
+    {
+        maxHealth = Mathf.RoundToInt(bulk.Value * 10);
+        maxHealth += Mathf.RoundToInt(endurance.Value * 2);
+    }
+    private void CalculateMaxStamina()
+    {
+        maxStamina = Mathf.RoundToInt(endurance.Value * 10);
     }
 }

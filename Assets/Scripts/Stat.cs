@@ -14,6 +14,11 @@ public class Stat
 
     public delegate void OnStatChanged();
     public event OnStatChanged onStatChanged;
+    
+    public void Init()
+    {
+        isDirty = true;
+    }
 
     public int Value
     {

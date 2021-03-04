@@ -11,16 +11,16 @@ public class BattleHUD : MonoBehaviour
     public Slider staminaSlider;
     public Slider abilitySlider;
 
-    public void SetHUD(Character character)
+    public void SetHUD(Character Char)
     {
-        nameText.text = character.charName;
-        levelText.text = "Level: " + character.charLevel;
-        healthSlider.maxValue = character.charStats.maxHealth;
-        healthSlider.value = character.charStats.currentHealth;
-        staminaSlider.maxValue = character.charStats.maxStamina;
-        staminaSlider.value = character.charStats.currentStamina;
-        abilitySlider.maxValue = character.charStats.maxAbility;
-        abilitySlider.value = character.charStats.currentAbility;
+        nameText.text = Char.charName;
+        levelText.text = "Level: " + Char.charLevel;
+        healthSlider.maxValue = Char.charStats.maxHealth;
+        healthSlider.value = Char.charStats.currentHealth;
+        staminaSlider.maxValue = Char.charStats.maxStamina;
+        staminaSlider.value = Char.charStats.currentStamina;
+        abilitySlider.maxValue = Char.charStats.maxAbility;
+        abilitySlider.value = Char.charStats.currentAbility;
     }
 
     public void SetHealth(int value)
