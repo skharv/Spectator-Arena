@@ -13,6 +13,11 @@ public class Database : MonoBehaviour
     private IMongoCollection<BsonDocument> playerData;
     private IMongoCollection<BsonDocument> matchData;
 
+    public void Init(Character left, Character right)
+    {
+        left.ToBson();
+    }
+
     void Start()
     {
         client = new MongoClient(MONGO_URI);

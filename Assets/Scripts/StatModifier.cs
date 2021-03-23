@@ -14,7 +14,7 @@ public class StatModifier
 
     public StatModifier(float Value, StatModifierType Type)
     {
-        value = Value;
         type = Type;
+        value = Value;
     }
 }

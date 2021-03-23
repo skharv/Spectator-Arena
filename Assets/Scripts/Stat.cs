@@ -5,22 +5,28 @@ using UnityEngine;
 public class Stat
 {
     [SerializeField]
-    private int baseValue = 0;
+    protected float baseValue = 0;
 
-    public bool isDirty { get; private set; }
-    private int value;
+    public bool isDirty { get; protected set; }
+    protected bool round = false;
+    private float value;
 
-    private List<StatModifier> modifiers = new List<StatModifier>();
+    protected List<StatModifier> modifiers = new List<StatModifier>();
 
     public delegate void OnStatChanged();
-    public event OnStatChanged onStatChanged;
+    public event OnStatChanged onStatChangedCallback;
     
     public void Init()
     {
         isDirty = true;
+        round = true;
     }
 
-    public int Value
+    virtual public void Init(Stat ParentStat, float ParentPercent, StatModifierType ModType)
+    {
+    }
+
+    public float Value
     {
         get {
             if (isDirty)
@@ -33,7 +39,7 @@ public class Stat
     }
 
 
-    public int CalculateFinalValue()
+    virtual public float CalculateFinalValue()
     {
         float finalValue = baseValue;
         float flatMod = 0;
@@ -42,9 +48,13 @@ public class Stat
         foreach (StatModifier modifier in modifiers)
         {
             if (modifier.type == StatModifierType.flat)
+            {
                 flatMod += modifier.value;
-            if (modifier.type == StatModifierType.percent)
+            }
+            else if(modifier.type == StatModifierType.percent)
+            {
                 percentMod += modifier.value;
+            }
         }
 
         /*order of modifications
@@ -61,7 +71,10 @@ public class Stat
         finalValue += flatMod;
         finalValue *= 1 + percentMod;
 
-        return Mathf.RoundToInt(finalValue);
+        if (round)
+            finalValue = Mathf.Round(finalValue);
+
+        return finalValue;
     }
 
     public void AddModifiers(StatModifier modifier)
@@ -69,9 +82,9 @@ public class Stat
         modifiers.Add(modifier);
         isDirty = true;
 
-        if (onStatChanged != null)
+        if (onStatChangedCallback != null)
         {
-            onStatChanged.Invoke();
+            onStatChangedCallback.Invoke();
         }
     }
     
@@ -80,9 +93,9 @@ public class Stat
         modifiers.Remove(modifier);
         isDirty = true;
 
-        if (onStatChanged != null)
+        if (onStatChangedCallback != null)
         {
-            onStatChanged.Invoke();
+            onStatChangedCallback.Invoke();
         }
     }
 }

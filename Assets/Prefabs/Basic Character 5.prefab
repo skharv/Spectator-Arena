@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6103104335202146480}
   - component: {fileID: 5545146551996058699}
   m_Layer: 8
-  m_Name: Basic Character 2
+  m_Name: Basic Character 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   stunDuration:
     baseValue: 0
   endurance:
-    baseValue: 7
+    baseValue: 2
   maxStamina:
     baseValue: 5
   stunRecovery:
@@ -197,7 +197,7 @@ MonoBehaviour:
   armor:
     baseValue: 2
   speed:
-    baseValue: 7
+    baseValue: 8
   cooldownRecovery:
     baseValue: 0
   attackSpeed:
@@ -216,8 +216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5623e504f87fe51469b11b68a4409b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charName: Medium
-  saveKey: 109
+  charName: Rudy
+  saveKey: 114
   attackFrame: {fileID: 3427114271967980436, guid: b7bab90fb2a2c794aabd4fbd239abd05,
     type: 3}
   parriedFrame: {fileID: 6480803066212409350, guid: b7bab90fb2a2c794aabd4fbd239abd05,

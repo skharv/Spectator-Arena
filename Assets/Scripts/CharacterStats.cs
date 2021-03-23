@@ -4,91 +4,143 @@ using System;
 
 public class CharacterStats : MonoBehaviour
 {
-    public int maxHealth { get; private set; }
-    public int currentHealth { get; private set; }
-    public int maxStamina { get; private set; }
+    public float currentHealth { get; private set; }
     public float currentStamina { get; private set; }
-    public int maxAbility { get; private set; }
-    public float currentAbility { get; private set; }
+    public float maxCooldown { get; private set; }
+    public float currentCooldown { get; private set; }
 
     public string abilityName { get; private set; }
 
-    public float damage { get; private set; }
-    public float stun { get; private set; }
+    public Inventory inventory;
 
-
-
+    //Stats
     [SerializeField]
     private Stat bulk;
     [SerializeField]
+    private ChildStat maxHealth;
+    [SerializeField]
+    private ChildStat damage;
+    [SerializeField]
+    private ChildStat stunDuration;
+
+    [SerializeField]
     private Stat endurance;
     [SerializeField]
+    private ChildStat maxStamina;
+    [SerializeField]
+    private ChildStat stunRecovery;
+    [SerializeField]
+    private ChildStat armor;
+
+
+    [SerializeField]
     private Stat speed;
+    [SerializeField]
+    private ChildStat cooldownRecovery;
+    [SerializeField]
+    private ChildStat attackSpeed;
+    [SerializeField]
+    private ChildStat blockChance;
 
     public void Awake()
     {
+        inventory = GetComponent<Inventory>();
+
         bulk.Init();
         endurance.Init();
         speed.Init();
         abilityName = "Test Ability";
 
-        bulk.onStatChanged += OnBulkChanged;
-        endurance.onStatChanged += OnEnduranceChanged;
-        speed.onStatChanged += OnSpeedChanged;
+        bulk.onStatChangedCallback += OnBulkChanged;
+        endurance.onStatChangedCallback += OnEnduranceChanged;
+        speed.onStatChangedCallback += OnSpeedChanged;
+        //inventory.onItemChangedCallback += OnItemChanged;
 
-        OnBulkChanged();
-        OnEnduranceChanged();
-        OnSpeedChanged();
+        damage.Init(bulk, 0.25f, StatModifierType.flat);
+        stunDuration.Init(bulk, 0.01f, StatModifierType.flat);
+        maxHealth.Init(bulk, 5.0f, StatModifierType.flat);
 
-        currentHealth = maxHealth;
-        currentStamina = maxStamina;
-        maxAbility = 100;
-        currentAbility = 0;
+        armor.Init(endurance, 0.1f, StatModifierType.flat);
+        maxStamina.Init(endurance, 5.0f, StatModifierType.flat);
+        stunRecovery.Init(endurance, 0.01f, StatModifierType.flat);
+
+        blockChance.Init(speed, 0.05f, StatModifierType.flat);
+        cooldownRecovery.Init(speed, 0.01f, StatModifierType.flat);
+        attackSpeed.Init(speed, 0.15f, StatModifierType.flat);
+
+        currentHealth = maxHealth.Value;
+        currentStamina = maxStamina.Value;
+        maxCooldown = 100;
+        currentCooldown = 0;
+
+        //OnBulkChanged();
+        //OnEnduranceChanged();
+        //OnSpeedChanged();
     }
 
     void OnBulkChanged()
     {
-        CalculateMaxHealth();
-        damage = bulk.Value;
-        stun = bulk.Value / 10f;
     }
     void OnEnduranceChanged()
     {
-        CalculateMaxStamina();
     }
     void OnSpeedChanged()
     {
     }
-    void Update()
+
+    void OnItemChanged(Item newItem, Item OldItem)
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            StatModifier mod = new StatModifier(2, StatModifierType.flat);
-            bulk.AddModifiers(mod);
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StatModifier mod = new StatModifier(0.2f, StatModifierType.percent);
-            bulk.AddModifiers(mod);
-        }
     }
 
-    public int GetBulkValue()
+    public float GetBulkValue()
     {
         return bulk.Value;
     }
-    public int GetEnduranceValue()
+    public float GetEnduranceValue()
     {
         return endurance.Value;
     }
-    public int GetSpeedValue()
+    public float GetSpeedValue()
     {
         return speed.Value;
     }
 
-    public void SetCurrentAbility(float amount)
+    public float GetDamageValue()
     {
-        currentAbility = amount;
+        return damage.Value;
+    }
+    public float GetStunDurationValue()
+    {
+        return stunDuration.Value;
+    }
+    public float GetStunRecoveryValue()
+    {
+        return stunRecovery.Value;
+    }
+    public float GetBlockChanceValue()
+    {
+        return blockChance.Value;
+    }
+    public float GetArmorValue()
+    {
+        return armor.Value;
+    }
+    public float GetCooldownRecoveryValue()
+    {
+        return cooldownRecovery.Value;
+    }
+    public float GetMaxStaminaValue()
+    {
+        return maxStamina.Value;
+    }
+    public float GetMaxHealthValue()
+    {
+        return maxHealth.Value;
+    }
+
+    public void SetCurrentCooldown(float amount)
+    {
+        currentCooldown = amount;
     }
     public void SetCurrentStamina(float amount)
     {
@@ -99,13 +151,16 @@ public class CharacterStats : MonoBehaviour
         currentHealth = amount;
     }
 
-    private void CalculateMaxHealth()
+    public void AddTempEndMod(StatModifier modifier)
     {
-        maxHealth = Mathf.RoundToInt(bulk.Value * 10);
-        maxHealth += Mathf.RoundToInt(endurance.Value * 2);
+        endurance.AddModifiers(modifier);
     }
-    private void CalculateMaxStamina()
+    public void AddTempBulkMod(StatModifier modifier)
     {
-        maxStamina = Mathf.RoundToInt(endurance.Value * 10);
+        bulk.AddModifiers(modifier);
+    }
+    public void AddTempSpeedMod(StatModifier modifier)
+    {
+        speed.AddModifiers(modifier);
     }
 }

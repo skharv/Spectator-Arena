@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2232547475221879399}
   - component: {fileID: 4245993451624941254}
   - component: {fileID: 1998671912982168497}
+  - component: {fileID: -5004804996110970330}
   m_Layer: 8
   m_Name: Basic Character 1
   m_TagString: Untagged
@@ -97,12 +98,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd311cb2ae85e34189c7d52e4701cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
   bulk:
+    baseValue: 7
+  maxHealth:
+    baseValue: 0
+  damage:
     baseValue: 5
+  stunDuration:
+    baseValue: 0
   endurance:
-    baseValue: 3
+    baseValue: 5
+  maxStamina:
+    baseValue: 5
+  stunRecovery:
+    baseValue: 0
+  armor:
+    baseValue: 2
   speed:
     baseValue: 5
+  cooldownRecovery:
+    baseValue: 0
+  attackSpeed:
+    baseValue: 0
+  blockChance:
+    baseValue: 0.1
 --- !u!114 &1998671912982168497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,15 +135,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5623e504f87fe51469b11b68a4409b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charName: Strong
+  saveKey: 115
   attackFrame: {fileID: 3427114271967980436, guid: b7bab90fb2a2c794aabd4fbd239abd05,
     type: 3}
   parriedFrame: {fileID: 6480803066212409350, guid: b7bab90fb2a2c794aabd4fbd239abd05,
+    type: 3}
+  blockFrame: {fileID: 6184959299203262911, guid: b7bab90fb2a2c794aabd4fbd239abd05,
     type: 3}
   idleFrame: {fileID: 8158605244509288230, guid: b7bab90fb2a2c794aabd4fbd239abd05,
     type: 3}
   recoveryFrame: {fileID: -4188724102742562465, guid: b7bab90fb2a2c794aabd4fbd239abd05,
     type: 3}
   hitFrame: {fileID: 801598655983992016, guid: b7bab90fb2a2c794aabd4fbd239abd05, type: 3}
+  flexFrame: {fileID: -7635366936938300408, guid: b7bab90fb2a2c794aabd4fbd239abd05,
+    type: 3}
+  deadFrame: {fileID: 0}
+--- !u!114 &-5004804996110970330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245993451624941255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abd9b1f1d41faa4d8449483e80dfcd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
 --- !u!1 &4245993452489628346
 GameObject:
   m_ObjectHideFlags: 0
